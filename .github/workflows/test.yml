@@ -42,7 +42,7 @@ jobs:
         uses: ./
         with:
           util-type: ossutil
-          endpoint: ${{ secrets.ENDPOINT }}
+          endpoint-oss: ${{ secrets.ENDPOINT }}
           access-key-id: ${{ secrets.ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
