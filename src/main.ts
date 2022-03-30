@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import toolCache from '@actions/tool-cache';
+import * as toolCache from '@actions/tool-cache';
 import fs from 'fs';
 import path from 'path';
 
