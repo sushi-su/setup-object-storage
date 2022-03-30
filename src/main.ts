@@ -10,7 +10,7 @@ async function runCOSCMD(): Promise<void> {
   const token = core.getInput('token');
   const bucketnameAppid = core.getInput('bucketname-appid');
   const region = core.getInput('region');
-  const endpoint = core.getInput('endpoint');
+  const endpoint = core.getInput('endpoint-cos');
   const maxThread = core.getInput('max-thread');
   const partSize = core.getInput('part-size');
   const doNotUseSsl = core.getInput('do-not-use-ssl');
@@ -56,7 +56,7 @@ async function runCOSCMD(): Promise<void> {
 }
 
 async function runOSSUtil(): Promise<void> {
-  const ENDPOINT = core.getInput('endpoint');
+  const ENDPOINT = core.getInput('endpoint-oss');
   const ACCESS_KEY_ID = core.getInput('access-key-id');
   const ACCESS_KEY_SECRET = core.getInput('access-key-secret');
   const STS_TOKEN = core.getInput('sts-token');

@@ -47,4 +47,4 @@ jobs:
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
       - name: Deploy
-        run: ossutil cp -rf action.yml oss://bucket/path
+        run: ossutil cp -rf action.yml oss://szfkx-web-demo
