@@ -1,11 +1,72 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup Object Storage'
+description: 'Setup COSCMD/OSSUtil'
+author: 'Sushi Su'
 inputs:
-  milliseconds: # change this
+  util-type:
+    description: 'cos | oss'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+
+  # oss 参数 start
+  endpoint-oss:
+    required: false
+    description: "填写Bucket所在地域的域名信息，可参考访问域名和数据中心。"
+  access-key-id:
+    required: false
+    description: "AccessKeyID"
+  access-key-secret:
+    required: false # util-type 为 oss 时必须配置
+    description: "AccessKeySceret"
+  sts-token:
+    required: false
+    description: "非必配项，若采用STS临时授权方式访问OSS需要配置该项。stsToken生成方式参考临时访问凭证"
+    default: ""
+  version:
+    required: false
+    description: "工具版本"
+    default: "1.7.9"
+  # oss 参数 end
+
+  # cos 参数 start
+  secret-id:
+    required: false # util-type 为 cos 时必须配置
+    description: '密钥 ID'
+  secret-key:
+    required: false # util-type 为 cos 时必须配置
+    description: '密钥 Key'
+  token:
+    required: false
+    description: '临时密钥 token，当使用临时密钥时需要配置，设置 x-cos-security-token 头部'
+    default: ''
+  bucketname-appid:
+    required: false # util-type 为 cos 时必须配置
+    description: '指定的存储桶名称，存储桶的命名格式为 BucketName-APPID'
+  region:
+    required: false # util-type 为 cos 时必须配置
+    description: '存储桶所在地域'
+  endpoint-cos:
+    required: false
+    description: '设置请求的 ENDPOINT，设置 ENDPOINT 参数后，REGION 参数会失效。当您使用的是默认域名，则此处配置格式为cos.<region>.myqcloud.com；当您使用全球加速域名，则配置为cos.accelerate.myqcloud.com'
+    default: ''
+  max-thread:
+    required: false
+    description: '多线程操作的最大线程数（默认为5，范围为1 - 30）'
+    default: '5'
+  part-size:
+    required: false
+    description: '分块操作的单块大小（单位MB，默认为1MB，范围为1 - 1000）'
+    default: '1'
+  do-not-use-ssl:
+    required: false
+    description: '使用 HTTP 协议，而不使用 HTTPS'
+    default: ''
+  anonymous:
+    required: false
+    description: '匿名操作（不携带签名）'
+    default: ''
+  # cos 参数 end
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: 'download-cloud'
+  color: 'orange'

@@ -1,105 +1,67 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# setup-object-storage
 
-# Create a JavaScript Action using TypeScript
+配置 对象存储 命令行工具
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+# Usage
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+See [action.yml](action.yml)
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
-
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
-
-Install the dependencies  
-```bash
-$ npm install
-```
-
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
-
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
+1. 用例(COSCMD):
 
 ```yaml
-uses: ./
-with:
-  milliseconds: 1000
+steps:
+  - uses: actions/checkout@v3
+
+  - name: Setup Python
+    uses: actions/setup-python@v3.0.0
+    with:
+      python-version: '3.9'
+
+  - name: Install COSCMD
+    run: |
+      pip install coscmd
+      pip install coscmd -U
+
+  - name: Setup COSCMD
+    uses: sushi-su/setup-object-storage@v1.0.0
+    with:
+      util-type: coscmd
+      secret-id: ${{ secrets.SECRET_ID }}
+      secret-key: ${{ secrets.SECRET_KEY }}
+      bucketname-appid: ${{ secrets.BUCKET }}
+      region: ${{ secrets.REGION }}
+      token: ${{ secrets.TOKEN }} # 可选参数
+      endpoint: ${{ secrets.ENDPOINT }} # 可选参数
+      max-thread: ${{ secrets.MAX_THREAD }} # 可选参数
+      part-size: ${{ secrets.PART_SIZE }} # 可选参数
+      do-not-use-ssl: ${{ secrets.DO_NOT_USE_SSL }} # 可选参数
+      anonymous: ${{ secrets.ANONYMOUS }} # 可选参数
+
+  - name: Deploy
+    run: coscmd upload action.yml /
 ```
+[详细用法参考，腾讯云 COSCMD 帮助文档](https://cloud.tencent.com/document/product/436/10976)
 
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
+2. 用例(OSSUtil):
 
-## Usage:
+```yaml
+steps:
+  - uses: actions/checkout@v3
+  - name: Setup OSSUtil
+    uses: sushi-su/setup-object-storage@v1.0.0
+    with:
+      util-type: ossutil
+      endpoint: ${{ secrets.ENDPOINT }}
+      access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+      access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+      sts-token: ${{ secrets.STS_TOKEN }} # 可选参数
+      version: "1.7.9" # 可选参数
+      
+  - name: Deploy
+    run: ossutil cp -rf action.yml oss://bucket/path
+```
+[详细用法参考，阿里云 OSSUtil 帮助文档](https://help.aliyun.com/document_detail/50452.html)
 
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+# License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)

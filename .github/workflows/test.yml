@@ -1,4 +1,4 @@
-name: 'build-test'
+name: 'test'
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
@@ -7,18 +7,44 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          npm install
-      - run: |
-          npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./
+
+      - name: Setup Python
+        uses: actions/setup-python@v3.0.0
         with:
-          milliseconds: 1000
+          python-version: '3.9'
+
+      - name: Install COSCMD
+        run: |
+          pip install coscmd
+          pip install coscmd -U
+
+      - name: Setup COSCMD
+        uses: ./
+        with:
+          util-type: coscmd
+          secret-id: ${{ secrets.SECRET_ID }}
+          secret-key: ${{ secrets.SECRET_KEY }}
+          bucketname-appid: ${{ secrets.BUCKET }}
+          region: ${{ secrets.REGION }}
+
+      - name: Deploy
+        run: coscmd upload action.yml /
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup OSSUtil
+        uses: ./
+        with:
+          util-type: ossutil
+          endpoint: ${{ secrets.ENDPOINT }}
+          access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+
+      - name: Deploy
+        run: ossutil cp -rf action.yml oss://bucket/path
