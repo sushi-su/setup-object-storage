@@ -64,7 +64,7 @@ async function runOSSUtil(): Promise<void> {
 
   const url = `https://gosspublic.alicdn.com/ossutil/${VERSION}/ossutil64`;
 
-  let toolPath = toolCache.find('ossutil', VERSION);
+  let toolPath = toolCache?.find('ossutil', VERSION);
 
   if (!toolPath) {
     core.info(`downloading from ${url}`);
