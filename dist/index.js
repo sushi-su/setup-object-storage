@@ -44,7 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
-const tool_cache_1 = __importDefault(__nccwpck_require__(784));
+const toolCache = __importStar(__nccwpck_require__(784));
 const fs_1 = __importDefault(__nccwpck_require__(147));
 const path_1 = __importDefault(__nccwpck_require__(17));
 function runCOSCMD() {
@@ -100,10 +100,10 @@ function runOSSUtil() {
         const STS_TOKEN = core.getInput('sts-token');
         const VERSION = core.getInput('version');
         const url = `https://gosspublic.alicdn.com/ossutil/${VERSION}/ossutil64`;
-        let toolPath = tool_cache_1.default.find('ossutil', VERSION);
+        let toolPath = toolCache.find('ossutil', VERSION);
         if (!toolPath) {
             core.info(`downloading from ${url}`);
-            toolPath = yield tool_cache_1.default.downloadTool(url);
+            toolPath = yield toolCache.downloadTool(url);
             core.info(`downloaded to ${toolPath}`);
         }
         const bin = path_1.default.join(__dirname, '.bin');
