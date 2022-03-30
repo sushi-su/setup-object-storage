@@ -7,7 +7,7 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 
 jobs:
-  build:
+  cos:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,7 +34,7 @@ jobs:
       - name: Deploy
         run: coscmd upload action.yml /
 
-  test:
+  oss:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -47,4 +47,4 @@ jobs:
           access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
       - name: Deploy
-        run: ossutil cp -rf action.yml oss://szfkx-web-demo
+        run: ossutil cp -rf action.yml oss://szfkx-web-demo/
