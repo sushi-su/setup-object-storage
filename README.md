@@ -13,7 +13,7 @@ steps:
   - uses: actions/checkout@v3
 
   - name: Setup Python
-    uses: actions/setup-python@v3.0.0
+    uses: actions/setup-python@v3.1.2
     with:
       python-version: '3.9'
 
@@ -55,7 +55,7 @@ steps:
       access-key-id: ${{ secrets.ACCESS_KEY_ID }}
       access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
       sts-token: ${{ secrets.STS_TOKEN }} # 可选参数
-      version: "1.7.9" # 可选参数
+      version: "1.7.10" # 可选参数
       
   - name: Deploy
     run: ossutil cp -rf action.yml oss://bucket/path

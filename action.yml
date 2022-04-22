@@ -23,7 +23,7 @@ inputs:
   version:
     required: false
     description: "工具版本"
-    default: "1.7.9"
+    default: "1.7.10"
   # oss 参数 end
 
   # cos 参数 start
