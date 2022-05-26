@@ -55,7 +55,7 @@ steps:
       access-key-id: ${{ secrets.ACCESS_KEY_ID }}
       access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
       sts-token: ${{ secrets.STS_TOKEN }} # 可选参数
-      version: "1.7.10" # 可选参数
+      version: "1.7.12" # 可选参数
       
   - name: Deploy
     run: ossutil cp -rf action.yml oss://bucket/path
